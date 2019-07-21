@@ -8,3 +8,6 @@ Download the https://github.com/openai/gym project, Copy the files from the fold
 
 ## For Monte Carlo Project
 Download the https://github.com/openai/gym project, Copy the files from the folder MonteCarloProject of this repository to OpenAIGym/gym/gym/envs/toy_text and run the jupyter file.
+
+## For Temporal Difference Project
+Download the https://github.com/openai/gym project, Copy the files from the folder TemporalDifferenceProject of this repository to OpenAIGym/gym/gym/envs/toy_text and run the jupyter file.
