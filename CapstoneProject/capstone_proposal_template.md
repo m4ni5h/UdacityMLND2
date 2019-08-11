@@ -1,7 +1,7 @@
 # Machine Learning Engineer Nanodegree
 ## Capstone Proposal
-Manish Kumar 
-August 6th, 2019
+Manish Kumar  
+August 11th, 2019
 
 ## Music Recommendation System
 
@@ -21,7 +21,6 @@ In this project, I will try to predict the chances of a user listening to a song
 If there are recurring listening event(s) triggered within a month after the user’s very first observable listening event, its target is marked 1, and 0 otherwise in the training set. The same rule applies to the testing set.  
 
 ### Datasets and Inputs
-
 From [KKBOX](https://www.kkbox.com/) we have training data set consisting of information of the first observable listening event for each unique user-song pair within a specific time duration. Metadata of each unique user and song pair is also provided.  
 The train and the test data are selected from users listening history in a given time period. The train and test sets are split based on time, and the split of public/private are based on unique user/song pairs.   
 
@@ -39,9 +38,6 @@ The train and the test data are selected from users listening history in a given
     - source_system_tab: the name of the tab where the event was triggered. System tabs are used to categorize KKBOX mobile apps functions. For example, tab my library contains functions to manipulate the local storage, and tab search contains functions relating to search.
     - source_screen_name: name of the layout a user sees.
     - source_type: an entry point a user first plays music on mobile apps. An entry point could be album, online-playlist, song .. etc.
-- sample_submission.csv
-    - id: same as id in test.csv
-    - target: this is the target variable. target=1 means there are recurring listening event(s) triggered within a month after the user’s very first observable listening event, target=0 otherwise .
 - songs.csv (Note that data is in unicode.)
     - song_id
     - song_length: in ms
@@ -70,40 +66,52 @@ Number of Unique Users in Training Dataset: 30755
 Number of Unique Users in Testing Dataset: 25131  
 
 Number of Unique Artists in Training Dataset: 40582  
-Number of Unique Artists in Testing Dataset: 27563
-
+Number of Unique Artists in Testing Dataset: 27563 
+ 
 Number of Languages in the Training and Testing Dataset: 10  
 Number of Genres in Training Dataset: 572  
-Number of Genres in Training Dataset: 501  
+Number of Genres in Training Dataset: 501   
 
 The Dataset has been taken from the [WSDM - KKBox's Music Recommendation Challenge](https://www.kaggle.com/c/kkbox-music-recommendation-challenge/overview) 
 
 ### Solution Statement
-_(approx. 1 paragraph)_
-
-In this section, clearly describe a solution to the problem. The solution should be applicable to the project domain and appropriate for the dataset(s) or input(s) given. Additionally, describe the solution thoroughly such that it is clear that the solution is quantifiable (the solution can be expressed in mathematical or logical terms) , measurable (the solution can be measured by some metric and clearly observed), and replicable (the solution can be reproduced and occurs more than once).
+First I would be trying various Ensemble methods learnt in Machine Learning Foundation Class like Gradient Boosting Algorithms like ADABoost then experimenting with Gradient Boosting Algorithms like XGBOOST, best performing model among these would be my benchmarking Models.
+Following the above analysis, I would employ the Deep Learning Techniques learnt as part of the Advanced Machine Learning to see the performance of prediction, from my intuition; I feel that if the model architecture is done properly it would be able to beat the benchmarking models with by more than 15% accuracy.
 
 ### Benchmark Model
-_(approximately 1-2 paragraphs)_
-
-In this section, provide the details for a benchmark model or result that relates to the domain, problem statement, and intended solution. Ideally, the benchmark model or result contextualizes existing methods or known information in the domain and problem given, which could then be objectively compared to the solution. Describe how the benchmark model or result is measurable (can be measured by some metric and clearly observed) with thorough detail.
-
+As per the Solution Statement, the better performing Ensemble methods will become my Benchmark Model. I will obtain results through an ensemble of gradient boosting tree models with different parameters. Some preprocessing will also be applied to the features described in the previous section by filling missing values and using LabelEncoder to map string variables to numeric ones. For the missing values in categorical features, I will be creating a new category “others” and for numeric features by “-1”. Since missing values are rarely missing at random, it is preferable to avoid filling in missing values by mean, median or most frequent categorical variable because we are using tree-based method. One-hot encoding for categorical features and normalization for the numeric features do not help improving tree-based method.  
+Target value "1" in the training set means that the user listened to that song again within one month after the user’s very first listening. However, target value "0" in the training set means the user listened to that song again but not within one month. While training the model, I will eliminate from the training set the duplicate user-song pairs with target variable "0".  
+Features: I will also try to employ Feature Engineering methods to derive and evaluate meaningful features like, Registration and Expiration date of the user, age of the use(checking out outliers), Songs Language, Age-Gap between Song and User, etc.
+ 
 ### Evaluation Metrics
-_(approx. 1-2 paragraphs)_
-
-In this section, propose at least one evaluation metric that can be used to quantify the performance of both the benchmark model and the solution model. The evaluation metric(s) you propose should be appropriate given the context of the data, the problem statement, and the intended solution. Describe how the evaluation metric(s) are derived and provide an example of their mathematical representations (if applicable). Complex evaluation metrics should be clearly defined and quantifiable (can be expressed in mathematical or logical terms).
+The benchmark model and solution model will both be evaluated on area under the ROC curve between the predicted probability and the observed target.  
 
 ### Project Design
-_(approx. 1 page)_
+For this project I would be using Python 3.7.3 for development.
+The Feature relationship in the project:
+<!-- ![alt text](DataStruct.png "Data Structure")   -->
+<img src="DataStruct.png" alt="Data Structure" width="500" class="center"/> 
 
-In this final section, summarize a theoretical workflow for approaching a solution given the problem. Provide thorough discussion for what strategies you may consider employing, what analysis of the data might be required before being used, or which algorithms will be considered for your implementation. The workflow and discussion that you provide should align with the qualities of the previous sections. Additionally, you are encouraged to include small visualizations, pseudocode, or diagrams to aid in describing the project design, but it is not required. The discussion should clearly outline your intended workflow of the capstone project.
+#### Benchmark Project
+For the benchmark project, I would be using numpy and pandas libraries for Data Loading, Data Merging, Finding additional Features (Contextual Features, User-side Features, Song-side Features and User-Song Pair) then doing some Features Processing where I would be doing Important Feature Selection. After the Data is ready, I would be using xgboost and lightgbm to get to the benchmark model AUC values.
+Hyper Parameters which I will choose for LGB:
+- boosting_type : gbdt
+- objective : 'binary',
+- metric : ['binary_logloss', 'auc'], 
+- learning_rate : 0.5
+- num_leaves : 99
+- max_depth : 10
+- min_data_in_leaf : 1306
+- feature_fraction : 0.5
+- bagging_fraction : 0.9
+- bagging_freq : 1
+- lambda_l1 : 6.37
+- lambda_l2 : 65200
+- min_gain_to_split : 0
+- min_sum_hessian_in_leaf : 0.1  
 
+#### Solution Project
+As per my decision to use Deep Learning technique to beat the benchmark model, I would be using sklearn, keras and TensorFlow libraries from Python and a refined NN Architecture, keeping in mind the Features and extracted additional Features. Not accurately but the rough design of my NN would look like: 
+<!-- ![](CNN.png "CNN Structure"  =100x20)   -->
+<img src="CNN.png" alt="CNN" width="500" class="center"/> 
 -----------
-
-**Before submitting your proposal, ask yourself. . .**
-
-- Does the proposal you have written follow a well-organized structure similar to that of the project template?
-- Is each section (particularly **Solution Statement** and **Project Design**) written in a clear, concise and specific fashion? Are there any ambiguous terms or phrases that need clarification?
-- Would the intended audience of your project be able to understand your proposal?
-- Have you properly proofread your proposal to assure there are minimal grammatical and spelling mistakes?
-- Are all the resources used for this project correctly cited and referenced?
