@@ -1,49 +1,140 @@
 # Machine Learning Engineer Nanodegree
 ## Capstone Project
-Joe Udacity  
-December 31st, 2050
+Manish Kumar
+September 15th, 2019
 
 ## I. Definition
-_(approx. 1-2 pages)_
 
 ### Project Overview
-In this section, look to provide a high-level overview of the project in layman’s terms. Questions to ask yourself when writing this section:
-- _Has an overview of the project been provided, such as the problem domain, project origin, and related datasets or input data?_
-- _Has enough background information been given so that an uninformed reader would understand the problem domain and following problem statement?_
+The commercialisation of the Internet and its entry into daily life along with the switch from analog to digital and the invention of the personal computer were the beginnings of the digital and technological changes that are now seen particularly within the music industry in the 21st century.  
+Few years ago, it was inconceivable that a person would listen to the Various Artists of choice on their morning commute. But, the glory days of Radio DJs have passed, and musical gatekeepers have been replaced with Machine Learning algorithms, continously finding and curating new tracks and unlimited streaming services.  
+While an OTT music subscriber has access to all kinds of music, algorithms still struggle in some areas. Without enough data about listening patter of the user, how would an algorithm know if the listener will like a new song or a new artist And, how would it know what songs to recommend to a new user. 
+Music being an 18 Billion Dollars industry, is growing as more free subscribers are converting to a paid user for the convenience of auto music curation.  
 
 ### Problem Statement
-In this section, you will want to clearly define the problem that you are trying to solve, including the strategy (outline of tasks) you will use to achieve the desired solution. You should also thoroughly discuss what the intended solution will be for this problem. Questions to ask yourself when writing this section:
-- _Is the problem statement clearly defined? Will the reader understand what you are expecting to solve?_
-- _Have you thoroughly discussed how you will attempt to solve the problem?_
-- _Is an anticipated solution clearly defined? Will the reader understand what results you are looking for?_
+In this regard; at the 11th ACM International Conference on Web Search and Data Mining ([WSDM 2018](http://www.wsdm-conference.org/2018/)) presented a [Kaggle Challenge](https://www.kaggle.com/c/kkbox-music-recommendation-challenge/overview) to build a better music recommendation system using a donated dataset from [KKBOX](https://www.kkbox.com/), Asia’s leading music streaming service, holding the world’s most comprehensive Asia-Pop music library with over 30 million tracks.  
+[KKBOX](https://www.kkbox.com/) uses a collaborative filtering based algorithm with matrix factorization and word embedding in their recommendation system but believe new techniques could lead to better results.  
+In this project, I will try to predict the chances of a user listening to a song repetitively after the first observable listening event within a time window was triggered.  
+If there are recurring listening event(s) triggered within a month after the user’s very first observable listening event, its target is marked 1, and 0 otherwise in the training set. The same rule applies to the testing set.  
 
 ### Metrics
-In this section, you will need to clearly define the metrics or calculations you will use to measure performance of a model or result in your project. These calculations and metrics should be justified based on the characteristics of the problem and problem domain. Questions to ask yourself when writing this section:
-- _Are the metrics you’ve chosen to measure the performance of your models clearly discussed and defined?_
-- _Have you provided reasonable justification for the metrics chosen based on the problem and solution?_
+In Machine Learning, performance measurement is an essential task. So when it comes to a classification problem, we can count on an AUC Curve. When we need to check or visualize the performance of the multi - class classification problem, we use AUC (Area Under The Curve) ROC (Receiver Operating Characteristics) curve. It is one of the most important evaluation metrics for checking any classification model’s performance. Higher the AUC Value, better the model is at predicting 0s as 0s and 1s as 1s. In this case, Higher the AUC, better the model is at distinguishing between repeatability of a song.
 
+<p align="center">
+  <img width="270" height="245" src="images/AUC.png">
+</p>
+<p align="center">
+  <img src="images/FPR.png"> 
+</p>
+  <img src="images/TPR.png">
+  <img src="images/Specificity.png">
+</p>
+
+An excellent model has AUC near to the 1 which means it has good measure of separability. A poor model has AUC near to the 0 which means it has worst measure of separability. In fact it means it is reciprocating the result. It is predicting 0s as 1s and 1s as 0s. And when AUC is 0.5, it means model has no class separation capacity whatsoever.
 
 ## II. Analysis
-_(approx. 2-4 pages)_
 
 ### Data Exploration
-In this section, you will be expected to analyze the data you are using for the problem. This data can either be in the form of a dataset (or datasets), input data (or input files), or even an environment. The type of data should be thoroughly described and, if possible, have basic statistics and information presented (such as discussion of input features or defining characteristics about the input or environment). Any abnormalities or interesting qualities about the data that may need to be addressed have been identified (such as features that need to be transformed or the possibility of outliers). Questions to ask yourself when writing this section:
-- _If a dataset is present for this problem, have you thoroughly discussed certain features about the dataset? Has a data sample been provided to the reader?_
-- _If a dataset is present for this problem, are statistics about the dataset calculated and reported? Have any relevant results from this calculation been discussed?_
-- _If a dataset is **not** present for this problem, has discussion been made about the input space or input data for your problem?_
-- _Are there any abnormalities or characteristics about the input space or dataset that need to be addressed? (categorical variables, missing values, outliers, etc.)_
+From [KKBOX](https://www.kkbox.com/) we have training data set consisting of information of the first observable listening event for each unique user-song pair within a specific time duration. Metadata of each unique user and song pair is also provided.  
+The train and the test data are selected from users listening history in a given time period. The train and test sets are split based on time, and the split of public/private are based on unique user/song pairs.  
+Number of Unique Songs in Training Dataset: 359966  
+Number of Unique Songs in Testing Dataset: 224753  
+
+Number of Unique Users in Training Dataset: 30755  
+Number of Unique Users in Testing Dataset: 25131  
+
+Number of Unique Artists in Training Dataset: 40582  
+Number of Unique Artists in Testing Dataset: 27563 
+ 
+Number of Languages in the Training and Testing Dataset: 10  
+Number of Genres in Training Dataset: 572  
+Number of Genres in Training Dataset: 501   
+
+The Dataset has been taken from the [WSDM - KKBox's Music Recommendation Challenge](https://www.kaggle.com/c/kkbox-music-recommendation-challenge/overview) 
+
 
 ### Exploratory Visualization
 In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
 - _Have you visualized a relevant characteristic or feature about the dataset or input data?_
 - _Is the visualization thoroughly analyzed and discussed?_
 - _If a plot is provided, are the axes, title, and datum clearly defined?_
+As part of exploratory data analysis(EDA) to see what data can reveal beyond the formal modelling, following plots were obtained. This exploration was done using the [Data Exploration Notebook](https://github.com/m4ni5h/UdacityMLND2/blob/master/CapstoneProject/Project/1_DataExploration.ipynb) checked in the GitHub Repository.
+
+Plotting Number of Plays VS Repeatability:
+<p align="center">
+  <img src="images/ExplorativePlots/PlaysVsRepeatability.png" width="900" height="600">
+</p>
+<br />
+<br />
+Plotting Genre,Composer,Lyricist Verses Repeatability of the Song:
+<p align="center">
+  <img src="images/ExplorativePlots/Genre,Composer,LyricistVsRepeatability.png">
+</p>
+<br />
+<br />
+<!-- Plotting Language,Songs,Plays Verses Repeatability of the Song:
+<p align="center">
+  <img src="images/ExplorativePlots/Language,Songs,PlaysVsRepeatability.png">
+</p> -->
+<br /><br /><br /><br />
+Plotting Count Verses Duration of the Song:
+<p align="center">
+  <img src="images/ExplorativePlots/CountVsDuration.png" width="600" height="300">
+</p>
+
+Plotting Count Verses Repeatability of the Song:
+<p align="center">
+  <img src="images/ExplorativePlots/CountVsRepeatability.png" width="600" height="500">
+</p>
+<br /><br /><br />
+
+Plotting Count Verses Number of Plays of the Song:
+<p align="center">
+  <img src="images/ExplorativePlots/CountVsPlays.png">
+</p>
+<br /><br /><br />
+Plotting Artists Verses Number of Plays of the Song:
+<p align="center">
+  <img src="images/ExplorativePlots/ArtistsVsPlays.png">
+</p>
+
+<!-- Plotting Artists Verses Repeatability of the Song:
+<p align="center">
+  <img src="images/ExplorativePlots/ArtistsVsRepeatability.png">
+</p> -->
+<br /><br /><br /><br /><br /><br />
+Plotting Repeatability Verses Number of Plays of the Song:
+<p align="center">
+  <img src="images/ExplorativePlots/RepeatabilityVsPlays.png" width="650" height="550">
+</p>
+
+<!-- Plotting Artists Verses Languages of the Song:
+<p align="center">
+  <img src="images/ExplorativePlots/ArtistsVsLanguages.png">
+</p> -->
+
+<!-- Plotting Tracks,Plays,Repeatability Verses Language of the Song:
+<p align="center">
+  <img src="images/ExplorativePlots/Tracks,Plays,RepeatabilityVsLanguage.png">
+</p> -->
+
+Plotting Track,Plays,Repeatability Verses Genre of the Song:
+<p align="center">
+  <img src="images/ExplorativePlots/Track,Plays,RepeatabilityVsGenre.png">
+</p>
+<br /><br /><br /><br /><br /><br />
+<br /><br /><br /><br /><br /><br />
+Plotting Plays Verses Genre of the Song:
+<p align="center">
+  <img src="images/ExplorativePlots/PlaysVsGenre.png">
+</p>
 
 ### Algorithms and Techniques
 In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
 - _Are the algorithms you will use, including any default variables/parameters in the project clearly defined?_
 - _Are the techniques to be used thoroughly discussed and justified?_
 - _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
+
 
 ### Benchmark
 In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
