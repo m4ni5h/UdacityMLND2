@@ -54,10 +54,6 @@ The Dataset has been taken from the [WSDM - KKBox's Music Recommendation Challen
 
 
 ### Exploratory Visualization
-In this section, you will need to provide some form of visualization that summarizes or extracts a relevant characteristic or feature about the data. The visualization should adequately support the data being used. Discuss why this visualization was chosen and how it is relevant. Questions to ask yourself when writing this section:
-- _Have you visualized a relevant characteristic or feature about the dataset or input data?_
-- _Is the visualization thoroughly analyzed and discussed?_
-- _If a plot is provided, are the axes, title, and datum clearly defined?_
 As part of exploratory data analysis(EDA) to see what data can reveal beyond the formal modelling, following plots were obtained. This exploration was done using the [Data Exploration Notebook](https://github.com/m4ni5h/UdacityMLND2/blob/master/CapstoneProject/Project/1_DataExploration.ipynb) checked in the GitHub Repository.
 
 Plotting Number of Plays VS Repeatability:
@@ -130,18 +126,40 @@ Plotting Plays Verses Genre of the Song:
 </p>
 
 ### Algorithms and Techniques
-In this section, you will need to discuss the algorithms and techniques you intend to use for solving the problem. You should justify the use of each one based on the characteristics of the problem and the problem domain. Questions to ask yourself when writing this section:
-- _Are the algorithms you will use, including any default variables/parameters in the project clearly defined?_
-- _Are the techniques to be used thoroughly discussed and justified?_
-- _Is it made clear how the input data or datasets will be handled by the algorithms and techniques chosen?_
-
+The Algorithms that I intend to use in this project is XGBOOST and CNN.
+XGBoost is an optimized distributed gradient boosting library designed to be highly efficient, flexible and portable. It implements machine learning algorithms under the Gradient Boosting framework. XGBoost provides a parallel tree boosting (also known as GBDT, GBM) that solve many data science problems in a fast and accurate way. XGBoost is an algorithm that has recently been dominating applied machine learning and Kaggle competitions for structured or tabular data. XGBoost is an implementation of gradient boosted decision trees designed for speed and performance. The implementation of the algorithm was engineered for efficiency of compute time and memory resources. In my case of predicting the Repeatability of the song, I will use this Algorithm to compute precision value.
+CNN (Convolutional neural networks) are comprised of two very simple elements, namely convolutional layers and pooling layers. Although simple, there are near-infinite ways to arrange these layers for a given problem. Fortunately, there are both common patterns for configuring these layers and architectural innovations that can be used to develop very deep convolutional neural networks. Studying these architectural design decisions developed for state-of-the-art classification tasks can provide both clarity and intuition for how to use these designs when designing a deep convolutional neural network model.
 
 ### Benchmark
 In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
 - _Has some result or value been provided that acts as a benchmark for measuring performance?_
 - _Is it clear how this result or value was obtained (whether by data or by hypothesis)?_
-
-
+To create a Benchmark model as mentioned above, I would be using XGBOOST algorithm.  
+The notebook used for this can be accessed [here](https://github.com/m4ni5h/UdacityMLND2/blob/master/CapstoneProject/Project/2_XGBOOST.ipynb). 
+It starts with some data Preparation:
+- Replacing NAs
+- Merging Datasets(train, songs, members)
+- Creating new features (registration_init_time_days, registration_init_time_months, registration_init_time_years and expiration_date)
+- Dropping correlated columns.  
+Finding CoRelation between the features
+<p align="center">
+  <img src="images/XGBoostPlots/CoRelationMatrix.png">
+</p>
+Feature Importance
+<p align="center">
+  <img src="images/XGBoostPlots/FeatureImportance.png" width="600" height="250">
+</p>
+Dropping the less important columns(< 0.04).
+<br />  
+Then using a XGBOOST Classifier with following parameters:
+XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
+              colsample_bynode=1, colsample_bytree=1, gamma=0,
+              learning_rate=0.1, max_delta_step=0, max_depth=15,
+              min_child_weight=5, missing=None, n_estimators=300, n_jobs=1,
+              nthread=None, objective='binary:logistic', random_state=0,
+              reg_alpha=0, reg_lambda=1, scale_pos_weight=1, seed=None,
+              silent=None, subsample=1, verbosity=1)
+              
 ## III. Methodology
 _(approx. 3-5 pages)_
 
@@ -150,6 +168,7 @@ In this section, all of your preprocessing steps will need to be clearly documen
 - _If the algorithms chosen require preprocessing steps like feature selection or feature transformations, have they been properly documented?_
 - _Based on the **Data Exploration** section, if there were abnormalities or characteristics that needed to be addressed, have they been properly corrected?_
 - _If no preprocessing is needed, has it been made clear why?_
+
 
 ### Implementation
 In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
