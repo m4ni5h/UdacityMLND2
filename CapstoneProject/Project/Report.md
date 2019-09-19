@@ -161,7 +161,6 @@ XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
               silent=None, subsample=1, verbosity=1)
               
 ## III. Methodology
-_(approx. 3-5 pages)_
 
 ### Data Preprocessing
 Data preprocessing is a data mining technique that involves transforming raw data into an understandable format. Real-world data is often incomplete, inconsistent, and/or lacking in certain behaviors or trends, and is likely to contain many errors. Data preprocessing is a proven method of resolving such issues. Data preprocessing prepares raw data for further processing.
@@ -194,13 +193,28 @@ In this section, the process for which metrics, algorithms, and techniques that 
 - _Is it made clear how the algorithms and techniques were implemented with the given datasets or input data?_
 - _Were there any complications with the original metrics or techniques that required changing prior to acquiring a solution?_
 - _Was there any part of the coding process (e.g., writing complicated functions) that should be documented?_
+Implementation was done using code which is checked in [GitHub](https://github.com/m4ni5h/UdacityMLND2/tree/master/CapstoneProject/Project).
+The main code is part of nn_training.py which is split into four parts:
+- Data Loading
+- Feature Preparation
+- Model Structure
+- Model Training
+As mentioned in the Algorithm part of the document that there are near-infinite ways to arrange these layers for a given problem, I too tried various structure with different hyper-parameters. The structure of the NN I chose to go with is:
+<p align="center">
+  <img src="images/NN_Structure.png">
+</p>
+
+List of Hyper-parameters are part of nn_record.csv file. 
+For modelling I had to try various parameters till I came to a conclusion, then I chose to deliberatly make the hyperparameters part of an input csv to facilitate a comparative study on the hyperparameter to choose in case we are deploying the Neural Network.
+I have tried to document code where ever possible for clarity in understading.
+During this project it dawn to me that we have used cleaned and archived data in our lessons; it took a lot of time and learning to get the Feature engineering part of the project done. Feature engineering is a part which I saw makes a lot of difference when it comes to accuracy and time of execution. Dimensionality reduction where ever required is also important using techniques like SVD. Some problem solvers on Kaggle just are able to beat other participants by using better Feature Engineering methods.
 
 ### Refinement
-In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
-- _Has an initial solution been found and clearly reported?_
-- _Is the process of improvement clearly documented, such as what techniques were used?_
-- _Are intermediate and final solutions clearly reported as the process is improved?_
-
+With BenchMark model, I was able to get an accuracy of 70%, when I first started to port the solution to Neural Network, I was not able to beat the benchmark model; As I had not done any Feature Engineering on the Provided Dataset. Also, the parameters were not correctly tuned. I also employed various techniques like:
+- Dynamic learning rate: whenever the loss function stopped decreasing, a learning rate drop was added.
+- Weight decay: when overfitting was detected (the training and validation losses diverged too much), the weight decay rate was increased
+<br />  
+The final TensorFlow model was derived by training in an iterative fashion, adjusting the parameters (e.g. learning rate, weight decay ratios). The final model has an accuracy of 73%.
 
 ## IV. Results
 _(approx. 2-3 pages)_
@@ -211,13 +225,28 @@ In this section, the final model and any supporting qualities should be evaluate
 - _Has the final model been tested with various inputs to evaluate whether the model generalizes well to unseen data?_
 - _Is the model robust enough for the problem? Do small perturbations (changes) in training data or the input space greatly affect the results?_
 - _Can results found from the model be trusted?_
+The val_auc value of the model is used to evaluated the model. Also, the final architecture has been chosen because of its preformance. The different hyper parameters are part of nn_record.csv:
+time,mode,activation,batchnorm,K,K0,lw,lw1,lr,lr_decay,sample_weight_rate,bst_epoch,trn_loss,trn_acc,val_loss,val_auc
+2019-09-20 13:31:35,nn_dot,elu,False,74,11,0.0005315258,0,0.001405365,0.778385,0,26,0.5288,0.73833,0.59692,0.73192
+2019-09-20 12:56:21,nn_dot,elu,True,82,6,0.0003233625,0,0.008507431,0.903615,0,19,0.54008,0.72931,0.60167,0.72858
+2019-09-20 17:07:30,nn_dot,leakyrelu,True,88,7,0.0009984157,0,0.0125347,0.909158,0,35,0.51591,0.74253,0.60994,0.72832
+2019-09-20 13:52:48,nn_dot,tanh,True,106,10,0.001520053,0,0.008778001,0.916829,0,38,0.52024,0.74107,0.59652,0.72796
+2019-09-20 14:10:16,nn_dot,tanh,True,51,15,0.0008714193,0,0.01027691,0.769936,0,21,0.5345,0.72838,0.59239,0.72767
+
 
 ### Justification
 In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
 - _Are the final results found stronger than the benchmark result reported earlier?_
 - _Have you thoroughly analyzed and discussed the final solution?_
 - _Is the final solution significant enough to have solved the problem?_
-
+As noted above I chose to use XGBOOST for its speed and efficiency.
+<p align="center">
+  <img src="images/XGBOOST-auc.png">
+</p>
+<p align="center">
+  <img src="images/XGBOOST-time.png">
+</p>
+With this I was able to get
 
 ## V. Conclusion
 _(approx. 1-2 pages)_
