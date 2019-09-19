@@ -164,11 +164,30 @@ XGBClassifier(base_score=0.5, booster='gbtree', colsample_bylevel=1,
 _(approx. 3-5 pages)_
 
 ### Data Preprocessing
-In this section, all of your preprocessing steps will need to be clearly documented, if any were necessary. From the previous section, any of the abnormalities or characteristics that you identified about the dataset will be addressed and corrected here. Questions to ask yourself when writing this section:
-- _If the algorithms chosen require preprocessing steps like feature selection or feature transformations, have they been properly documented?_
-- _Based on the **Data Exploration** section, if there were abnormalities or characteristics that needed to be addressed, have they been properly corrected?_
-- _If no preprocessing is needed, has it been made clear why?_
-
+Data preprocessing is a data mining technique that involves transforming raw data into an understandable format. Real-world data is often incomplete, inconsistent, and/or lacking in certain behaviors or trends, and is likely to contain many errors. Data preprocessing is a proven method of resolving such issues. Data preprocessing prepares raw data for further processing.
+In my case, data obtained from [WSDM - KKBox's Music Recommendation Challenge](https://www.kaggle.com/c/kkbox-music-recommendation-challenge/overview) required some Data Processing as it was a direct dump from the KKBox database.
+I followed following processing steps to make the data suitable for the CNN that I plan to use in the next steps.
+- Processing the IDs:
+  - Removing the Songs IDs from Songs and song_extra_info that do not appear training, testing Dataset.
+  - Applying sklearn.preprocessing.LabelEncoder on MSNO and song_id.
+  - Handling Empty values and Applying LabelEncoder on Train, Test and Members Dataset.
+  - Handling the Genre information in Songs dataset by IDing the genres.
+  - Creating artist_cnt, lyricist_cnt, composer_cnt and is_featured in Songs Dataset.
+  - Handling the empty artist_name, lyricist, composer and language and Applying LabelEncoder.
+- Processing the Occurances of data:
+  - Finding the count of songs wrt to user.
+  - Finding the count of songs wrt to artists, composers, lyricists and genres.
+  - Finding the count of songs wrt to the source on which song was played.
+- Processing the ISRC(International Standard Recording Code)
+  - Handling the missing ISRCs: 
+  - Finding count of songs as per Country Code, Registrant Code, Year of Reference and Designation Code
+  - Finding count of Listens as per Country Code, Registrant Code, Year of Reference and Designation Code
+- Applying SVD:
+  - SVD on User-Songs Pairs
+  - SVD on User-Artist Pairs
+- Feature engineer the time stamp for some features.
+- Compiling data before and after process.
+- Making the data ready for Training.
 
 ### Implementation
 In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
