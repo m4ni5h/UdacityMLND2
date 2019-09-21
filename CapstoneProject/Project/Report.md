@@ -1,7 +1,7 @@
 # Machine Learning Engineer Nanodegree
 ## Capstone Project
 Manish Kumar
-September 15th, 2019
+September 21th, 2019
 
 ## I. Definition
 
@@ -31,6 +31,7 @@ In Machine Learning, performance measurement is an essential task. So when it co
 </p>
 
 An excellent model has AUC near to the 1 which means it has good measure of separability. A poor model has AUC near to the 0 which means it has worst measure of separability. In fact it means it is reciprocating the result. It is predicting 0s as 1s and 1s as 0s. And when AUC is 0.5, it means model has no class separation capacity whatsoever.
+<br/><br/>
 
 ## II. Analysis
 
@@ -52,27 +53,25 @@ Number of Genres in Training Dataset: 501
 
 The Dataset has been taken from the [WSDM - KKBox's Music Recommendation Challenge](https://www.kaggle.com/c/kkbox-music-recommendation-challenge/overview) 
 
+<br /><br />
 
 ### Exploratory Visualization
 As part of exploratory data analysis(EDA) to see what data can reveal beyond the formal modelling, following plots were obtained. This exploration was done using the [Data Exploration Notebook](https://github.com/m4ni5h/UdacityMLND2/blob/master/CapstoneProject/Project/1_DataExploration.ipynb) checked in the GitHub Repository.
 
 Plotting Number of Plays VS Repeatability:
 <p align="center">
-  <img src="images/ExplorativePlots/PlaysVsRepeatability.png" width="900" height="600">
+  <img src="images/ExplorativePlots/PlaysVsRepeatability.png" width="900" height="500">
 </p>
-<br />
-<br />
+<div style="page-break-after: always;"></div>
 Plotting Genre,Composer,Lyricist Verses Repeatability of the Song:
 <p align="center">
   <img src="images/ExplorativePlots/Genre,Composer,LyricistVsRepeatability.png">
 </p>
-<br />
-<br />
+<div style="page-break-after: always;"></div>
 <!-- Plotting Language,Songs,Plays Verses Repeatability of the Song:
 <p align="center">
   <img src="images/ExplorativePlots/Language,Songs,PlaysVsRepeatability.png">
 </p> -->
-<br /><br /><br /><br />
 Plotting Count Verses Duration of the Song:
 <p align="center">
   <img src="images/ExplorativePlots/CountVsDuration.png" width="600" height="300">
@@ -82,7 +81,8 @@ Plotting Count Verses Repeatability of the Song:
 <p align="center">
   <img src="images/ExplorativePlots/CountVsRepeatability.png" width="600" height="500">
 </p>
-<br /><br /><br />
+
+<div style="page-break-after: always;"></div>
 
 Plotting Count Verses Number of Plays of the Song:
 <p align="center">
@@ -98,7 +98,9 @@ Plotting Artists Verses Number of Plays of the Song:
 <p align="center">
   <img src="images/ExplorativePlots/ArtistsVsRepeatability.png">
 </p> -->
-<br /><br /><br /><br /><br /><br />
+
+<div style="page-break-after: always;"></div>
+
 Plotting Repeatability Verses Number of Plays of the Song:
 <p align="center">
   <img src="images/ExplorativePlots/RepeatabilityVsPlays.png" width="650" height="550">
@@ -118,8 +120,9 @@ Plotting Track,Plays,Repeatability Verses Genre of the Song:
 <p align="center">
   <img src="images/ExplorativePlots/Track,Plays,RepeatabilityVsGenre.png">
 </p>
-<br /><br /><br /><br /><br /><br />
-<br /><br /><br /><br /><br /><br />
+
+<div style="page-break-after: always;"></div>
+
 Plotting Plays Verses Genre of the Song:
 <p align="center">
   <img src="images/ExplorativePlots/PlaysVsGenre.png">
@@ -233,10 +236,6 @@ The different Model Structure obtained for the different hyper-parameters are av
 As part of checking the robustness of the model, I had executed the same model by splitting the into halfs and one forth, but still I was able to achieve AUC > 0.71.
 
 ### Justification
-In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
-- _Are the final results found stronger than the benchmark result reported earlier?_
-- _Have you thoroughly analyzed and discussed the final solution?_
-- _Is the final solution significant enough to have solved the problem?_
 As noted above I chose to use XGBOOST for its speed and efficiency as benchmark model.
 <p align="center">
   <img src="images/XGBOOST-auc.png">
@@ -253,36 +252,35 @@ With this I was able to get accuracy of 0.69:
 There is no comparison between the time the two algorithms took for training, as XGBOOST outperformed the NN exponentially. But as far as the accuracy of the two models are concerned, the NN model performed better than the XGBOOST and the same can be further tuned to make the accuracy better.
 
 ## V. Conclusion
-_(approx. 1-2 pages)_
 
 ### Free-Form Visualization
-In this section, you will need to provide some form of visualization that emphasizes an important quality about the project. It is much more free-form, but should reasonably support a significant result or characteristic about the problem that you want to discuss. Questions to ask yourself when writing this section:
-- _Have you visualized a relevant or important quality about the problem, dataset, input data, or results?_
-- _Is the visualization thoroughly analyzed and discussed?_
-- _If a plot is provided, are the axes, title, and datum clearly defined?_
-For Free-Form Visulatization, I had seperated some extra data before starting the Feature Extraction and ran the same 
+As mentioned in the Model Evaluation and Validation, I had split the data from [WSDM - KKBox's Music Recommendation Challenge](https://www.kaggle.com/c/kkbox-music-recommendation-challenge/overview) and I ran the same model on the data, it produced an AUC of 0.74, Which can be seen in the nn_record_free_form.csv
+The different AUC values can be seen in the val_auc column part of nn_record_free_form.csv:
+time,mode,activation,batchnorm,K,K0,lw,lw1,lr,lr_decay,sample_weight_rate,bst_epoch,trn_loss,trn_acc,val_loss,val_auc
+2019-09-21 14:50:30,nn_dot,elu,False,74,11,0.0005315258,0,0.001405365,0.778385,0,26,0.5288,0.73833,0.59692,0.73232
+2019-09-21 13:59:23,nn_dot,elu,True,82,6,0.0003233625,0,0.008507431,0.903615,0,19,0.54008,0.72931,0.60167,0.76754
+2019-09-21 18:19:55,nn_dot,leakyrelu,True,88,7,0.0009984157,0,0.0125347,0.909158,0,35,0.51591,0.74253,0.60994,0.72856
+2019-09-21 14:59:03,nn_dot,tanh,True,106,10,0.001520053,0,0.008778001,0.916829,0,38,0.52024,0.74107,0.59652,0.72678
+2019-09-21 15:14:19,nn_dot,tanh,True,51,15,0.0008714193,0,0.01027691,0.769936,0,21,0.5345,0.72838,0.59239,0.72893
 
 ### Reflection
-In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section:
-- _Have you thoroughly summarized the entire process you used for this project?_
-- _Were there any interesting aspects of the project?_
-- _Were there any difficult aspects of the project?_
-- _Does the final model and solution fit your expectations for the problem, and should it be used in a general setting to solve these types of problems?_
+Reflecting on the process that I followed for completing the project can be put in following process:
+  - Load Datasets from CSV.
+  - Understand Data With Descriptive Statistics. (Analyze Data)
+  - Understand Data With Visualization. (Analyze Data)
+  - Pre-Process Data. (Prepare Data)
+  - Feature Selection. (Prepare Data)
+  - Resampling Methods. (Evaluate Algorithms)
+  - Algorithm Evaluation Metrics. (Evaluate Algorithms)
+  - Model Selection. (Evaluate Algorithms)
+  - Pipelines. (Evaluate Algorithms)
+  - Algorithm Parameter Tuning. (Improve Results)
+  - Model Finalization. (Present Results)
+Actually the steps are part of top level tasks which can be defined as Define Problem, Analyze Data, Prepare Data, Evaluate Algorithms, Improve Results and Present Results
+From the course, I had enough practise in most of the steps but Feature selection, Resampling Method thinking about Pipeline were challenging in the sense that I did not consider them to take so much time. With this project I came to know their importance on the Final result too. As I had metioned that in competitions like Kaggle, Feature engineering becomes very important.
 
 ### Improvement
-In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution. Questions to ask yourself when writing this section:
-- _Are there further improvements that could be made on the algorithms or techniques you used in this project?_
-- _Were there algorithms or techniques you researched that you did not know how to implement, but would consider using if you knew how?_
-- _If you used your final solution as the new benchmark, do you think an even better solution exists?_
-
+Now that the project is near completion, It became clear that Neural Network solutions are complex and require a lot of resource, very easily I was able to reach the maximum limit of the RAM(18GB) of my development setup, then I had to divide the data in chunks to solve to the problem at hand. In this scenario, AMAZON Sagemaker could have been choosen for solving the problem.
+It also became clear that given the limited resource and time, Machine Learning algorithms like XGBOOST and Light GBM are still prevalent among ML engineers even for competitive problems. 
+As this field is still evolving there would be better solution to any problem that we are trying to solve today. Also, I have still not explored fully the latest Algorithms that have come out which are more efficient and accurate. 
 -----------
-
-**Before submitting, ask yourself. . .**
-
-- Does the project report you’ve written follow a well-organized structure similar to that of the project template?
-- Is each section (particularly **Analysis** and **Methodology**) written in a clear, concise and specific fashion? Are there any ambiguous terms or phrases that need clarification?
-- Would the intended audience of your project be able to understand your analysis, methods, and results?
-- Have you properly proof-read your project report to assure there are minimal grammatical and spelling mistakes?
-- Are all the resources used for this project correctly cited and referenced?
-- Is the code that implements your solution easily readable and properly commented?
-- Does the code execute without error and produce results similar to those reported?
