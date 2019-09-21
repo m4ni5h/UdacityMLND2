@@ -217,15 +217,11 @@ With BenchMark model, I was able to get an accuracy of 70%, when I first started
 The final TensorFlow model was derived by training in an iterative fashion, adjusting the parameters (e.g. learning rate, weight decay ratios). The final model has an accuracy of 73%.
 
 ## IV. Results
-_(approx. 2-3 pages)_
 
 ### Model Evaluation and Validation
-In this section, the final model and any supporting qualities should be evaluated in detail. It should be clear how the final model was derived and why this model was chosen. In addition, some type of analysis should be used to validate the robustness of this model and its solution, such as manipulating the input data or environment to see how the model’s solution is affected (this is called sensitivity analysis). Questions to ask yourself when writing this section:
-- _Is the final model reasonable and aligning with solution expectations? Are the final parameters of the model appropriate?_
-- _Has the final model been tested with various inputs to evaluate whether the model generalizes well to unseen data?_
-- _Is the model robust enough for the problem? Do small perturbations (changes) in training data or the input space greatly affect the results?_
-- _Can results found from the model be trusted?_
-The val_auc value of the model is used to evaluated the model. Also, the final architecture has been chosen because of its preformance. The different hyper parameters are part of nn_record.csv:
+The val_auc value of the model is used to evaluated the model. Also, the final architecture has been chosen because of its preformance which was tested by manipulating the structure. 
+<br />
+The different hyper parameters are part of nn_record.csv:
 time,mode,activation,batchnorm,K,K0,lw,lw1,lr,lr_decay,sample_weight_rate,bst_epoch,trn_loss,trn_acc,val_loss,val_auc
 2019-09-20 13:31:35,nn_dot,elu,False,74,11,0.0005315258,0,0.001405365,0.778385,0,26,0.5288,0.73833,0.59692,0.73192
 2019-09-20 12:56:21,nn_dot,elu,True,82,6,0.0003233625,0,0.008507431,0.903615,0,19,0.54008,0.72931,0.60167,0.72858
@@ -233,20 +229,28 @@ time,mode,activation,batchnorm,K,K0,lw,lw1,lr,lr_decay,sample_weight_rate,bst_ep
 2019-09-20 13:52:48,nn_dot,tanh,True,106,10,0.001520053,0,0.008778001,0.916829,0,38,0.52024,0.74107,0.59652,0.72796
 2019-09-20 14:10:16,nn_dot,tanh,True,51,15,0.0008714193,0,0.01027691,0.769936,0,21,0.5345,0.72838,0.59239,0.72767
 
+The different Model Structure obtained for the different hyper-parameters are available [here](https://github.com/m4ni5h/UdacityMLND2/tree/master/CapstoneProject/Project/images/NNStructure)
+As part of checking the robustness of the model, I had executed the same model by splitting the into halfs and one forth, but still I was able to achieve AUC > 0.71.
 
 ### Justification
 In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
 - _Are the final results found stronger than the benchmark result reported earlier?_
 - _Have you thoroughly analyzed and discussed the final solution?_
 - _Is the final solution significant enough to have solved the problem?_
-As noted above I chose to use XGBOOST for its speed and efficiency.
+As noted above I chose to use XGBOOST for its speed and efficiency as benchmark model.
 <p align="center">
   <img src="images/XGBOOST-auc.png">
 </p>
 <p align="center">
   <img src="images/XGBOOST-time.png">
 </p>
-With this I was able to get
+<br />
+With this I was able to get accuracy of 0.69:
+<p align="center">
+  <img src="images/XGBoost_Result.png">
+</p>
+<br />
+There is no comparison between the time the two algorithms took for training, as XGBOOST outperformed the NN exponentially. But as far as the accuracy of the two models are concerned, the NN model performed better than the XGBOOST and the same can be further tuned to make the accuracy better.
 
 ## V. Conclusion
 _(approx. 1-2 pages)_
@@ -256,6 +260,7 @@ In this section, you will need to provide some form of visualization that emphas
 - _Have you visualized a relevant or important quality about the problem, dataset, input data, or results?_
 - _Is the visualization thoroughly analyzed and discussed?_
 - _If a plot is provided, are the axes, title, and datum clearly defined?_
+For Free-Form Visulatization, I had seperated some extra data before starting the Feature Extraction and ran the same 
 
 ### Reflection
 In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section:
