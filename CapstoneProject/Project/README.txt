@@ -1,4 +1,4 @@
-The Data Exploration and XGBOOST analysis are done in Jupyter notebook(1_DataExploration.ipynb, 2_XGBOOST.ipynb) which can accessed from https://github.com/m4ni5h/UdacityMLND2/tree/master/CapstoneProject/ 
+The Data Exploration and XGBOOST analysis are done in Jupyter notebook(1_DataExploration.ipynb, 2_XGBOOST.ipynb) which can accessed from https://github.com/m4ni5h/UdacityMLND2/tree/master/CapstoneProject/Project.
 Steps to Reproduce Similar Results(Final Solution):
 1. Download the data from [WSDM - KKBox's Music Recommendation Challenge](https://www.kaggle.com/c/kkbox-music-recommendation-challenge/overview)
 2. Download the code checked in the GitHub Repository https://github.com/m4ni5h/UdacityMLND2/tree/master/CapstoneProject/

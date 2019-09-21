@@ -134,9 +134,6 @@ XGBoost is an optimized distributed gradient boosting library designed to be hig
 CNN (Convolutional neural networks) are comprised of two very simple elements, namely convolutional layers and pooling layers. Although simple, there are near-infinite ways to arrange these layers for a given problem. Fortunately, there are both common patterns for configuring these layers and architectural innovations that can be used to develop very deep convolutional neural networks. Studying these architectural design decisions developed for state-of-the-art classification tasks can provide both clarity and intuition for how to use these designs when designing a deep convolutional neural network model.
 
 ### Benchmark
-In this section, you will need to provide a clearly defined benchmark result or threshold for comparing across performances obtained by your solution. The reasoning behind the benchmark (in the case where it is not an established result) should be discussed. Questions to ask yourself when writing this section:
-- _Has some result or value been provided that acts as a benchmark for measuring performance?_
-- _Is it clear how this result or value was obtained (whether by data or by hypothesis)?_
 To create a Benchmark model as mentioned above, I would be using XGBOOST algorithm.  
 The notebook used for this can be accessed [here](https://github.com/m4ni5h/UdacityMLND2/blob/master/CapstoneProject/Project/2_XGBOOST.ipynb). 
 It starts with some data Preparation:
@@ -275,7 +272,8 @@ Reflecting on the process that I followed for completing the project can be put 
   - Model Selection. (Evaluate Algorithms)
   - Pipelines. (Evaluate Algorithms)
   - Algorithm Parameter Tuning. (Improve Results)
-  - Model Finalization. (Present Results)
+  - Model Finalization. (Present Results)  
+
 Actually the steps are part of top level tasks which can be defined as Define Problem, Analyze Data, Prepare Data, Evaluate Algorithms, Improve Results and Present Results
 From the course, I had enough practise in most of the steps but Feature selection, Resampling Method thinking about Pipeline were challenging in the sense that I did not consider them to take so much time. With this project I came to know their importance on the Final result too. As I had metioned that in competitions like Kaggle, Feature engineering becomes very important.
 
@@ -283,4 +281,5 @@ From the course, I had enough practise in most of the steps but Feature selectio
 Now that the project is near completion, It became clear that Neural Network solutions are complex and require a lot of resource, very easily I was able to reach the maximum limit of the RAM(18GB) of my development setup, then I had to divide the data in chunks to solve to the problem at hand. In this scenario, AMAZON Sagemaker could have been choosen for solving the problem.
 It also became clear that given the limited resource and time, Machine Learning algorithms like XGBOOST and Light GBM are still prevalent among ML engineers even for competitive problems. 
 As this field is still evolving there would be better solution to any problem that we are trying to solve today. Also, I have still not explored fully the latest Algorithms that have come out which are more efficient and accurate. 
------------
+
+------------
