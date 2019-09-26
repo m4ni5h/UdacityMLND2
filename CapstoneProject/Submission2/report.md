@@ -164,13 +164,19 @@ With this our training data is ready for the implementation part.
 In the evolving field of machine learning there are a lot of Algorithms which we encounter, but recently some algorithms are more prevalently used because of their efficiency and accuracy. This can be verified from articles published in ML community, where the coders are employing new ML algorithms like [LightGBM](https://lightgbm.readthedocs.io/en/latest/) and [XGBOOST](https://xgboost.readthedocs.io/en/latest/) in their attempts to solve ML Problems. In this project, I am attempting to test the well known classic ML algorithms mentioned in the Algorithms and Techniques section, even creating an ensemble of the better performing Models and then beating this ensemble model with newer Models.
 
 The implementation can be seen in the accompanying Jupyter notebook where the accuracy of the classic models are as follows:
-<!-- Put the Accuracy values here -->
+- KNeighborsClassifier: 0.618
+- DecisionTreeClassifier: 0.697
+- RandomForestClassifier: 0.746
+- AdaBoostClassifier: 0.714
+- GradientBoostingClassifier: 0.721
+- GaussianNB: 0.665
+- LinearDiscriminantAnalysis: 0.673
+- QuadraticDiscriminantAnalysis: 0.680
 
-Its seen that RandomForestClassifier and GradientBoostingClassifier perform better than the rest of the Models in the list. Thus I created an ensemble of the two Models using [StackingCVClassifier](http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier/) which resulted in an overall accuracy of:
-<!-- Put the StackingCVClassifier Accuracy values here -->
+Its seen that RandomForestClassifier and GradientBoostingClassifier perform better than the rest of the Models in the list. Thus I created an ensemble of the two Models using [StackingCVClassifier](http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier/) which resulted in an overall accuracy of 0.73
 
 For the final model I experimented with the [LightGBM](https://lightgbm.readthedocs.io/en/latest/) and [XGBOOST](https://xgboost.readthedocs.io/en/latest/) model, which gave following accuracy values:
-<!-- Put the LightGBM and XGBOOST Accuracy values here -->
+0.736 and 0.761 respectively
 
 ### Refinement
 In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
@@ -178,7 +184,20 @@ In this section, you will need to discuss the process of improvement you made up
 - _Is the process of improvement clearly documented, such as what techniques were used?_
 - _Are intermediate and final solutions clearly reported as the process is improved?_
 
-For refining the final solution which is [XGBOOST](https://xgboost.readthedocs.io/en/latest/) I had to understand deeply the parameters defined in [XGBOOST Docs](https://xgboost.readthedocs.io/en/latest/python/python_api.html#xgboost.XGBClassifier). 
+For refining the final solution which is [XGBOOST](https://xgboost.readthedocs.io/en/latest/) I had to understand the parameters defined in [XGBOOST Docs](https://xgboost.readthedocs.io/en/latest/python/python_api.html#xgboost.XGBClassifier). The main parameters which required tuning in this case was learning_rate, n_estimators, max_depth and n_jobs. Also, as XGBOOST supports early stopping I used it in case our model reaches inflection point. 
+Following graphs were obtained when trying to find out the tuned values for the above mentioned hyper parameters.
+<p align="center">
+  <img src="learning_rate_VS_log_loss.png">
+</p>
+<p align="center">
+  <img src="estimator_number_VS_log_loss.png">
+</p>
+<p align="center">
+  <img src="depth_VS_log_loss.png">
+</p>
+<p align="center">
+  <img src="num_jobs_VS_speed.png">
+</p>
 
 ## IV. Results
 _(approx. 2-3 pages)_
