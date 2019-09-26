@@ -136,19 +136,41 @@ references:
 ---
 
 ## III. Methodology
-_(approx. 3-5 pages)_
 
 ### Data Preprocessing
-In this section, all of your preprocessing steps will need to be clearly documented, if any were necessary. From the previous section, any of the abnormalities or characteristics that you identified about the dataset will be addressed and corrected here. Questions to ask yourself when writing this section:
-- _If the algorithms chosen require preprocessing steps like feature selection or feature transformations, have they been properly documented?_
-- _Based on the **Data Exploration** section, if there were abnormalities or characteristics that needed to be addressed, have they been properly corrected?_
-- _If no preprocessing is needed, has it been made clear why?_
+To prepare the final training set from the data obtained from the [WSDM - KKBox's Music Recommendation Challenge](https://www.kaggle.com/c/kkbox-music-recommendation-challenge/overview) following steps were taken:
+- Loading the training data from train.csv
+- Merging the training data with songs data(songs.csv) on matching song_id.
+- Merging the resultant data from previous step with members data(members.csv) on matching msno.
+- Merging the resultant data from previous step with extra songs information(song_extra_info.csv) on matching song_id.
+- The resulting dataset had null values in following features: 
+  - source_system_tab
+  - source_screen_name
+  - source_type
+  - genre_ids
+  - artist_name
+  - composer
+  - lyricist
+  - language
+  - gender
+  - name
+  - isrc
+- The training set also had two datetime features; registration_init_time and expiration_date, these features were broken into year, month and day.
+- As, the training dataset had few categorical features (msno, song_id, source_system_tab, source_screen_name, source_type, genre_ids, artist_name, composer, lyricist, gender, name, isrc) these features had to be Encoded using [LabelEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.LabelEncoder.html)
+
+With this our training data is ready for the implementation part.
 
 ### Implementation
-In this section, the process for which metrics, algorithms, and techniques that you implemented for the given data will need to be clearly documented. It should be abundantly clear how the implementation was carried out, and discussion should be made regarding any complications that occurred during this process. Questions to ask yourself when writing this section:
-- _Is it made clear how the algorithms and techniques were implemented with the given datasets or input data?_
-- _Were there any complications with the original metrics or techniques that required changing prior to acquiring a solution?_
-- _Was there any part of the coding process (e.g., writing complicated functions) that should be documented?_
+In the evolving field of machine learning there are a lot of Algorithms which we encounter, but recently some algorithms are more prevalently used because of their efficiency and accuracy. This can be verified from articles published in ML community, where the coders are employing new ML algorithms like [LightGBM](https://lightgbm.readthedocs.io/en/latest/) and [XGBOOST](https://xgboost.readthedocs.io/en/latest/) in their attempts to solve ML Problems. In this project, I am attempting to test the well known classic ML algorithms mentioned in the Algorithms and Techniques section, even creating an ensemble of the better performing Models and then beating this ensemble model with newer Models.
+
+The implementation can be seen in the accompanying Jupyter notebook where the accuracy of the classic models are as follows:
+<!-- Put the Accuracy values here -->
+
+Its seen that RandomForestClassifier and GradientBoostingClassifier perform better than the rest of the Models in the list. Thus I created an ensemble of the two Models using [StackingCVClassifier](http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier/) which resulted in an overall accuracy of:
+<!-- Put the StackingCVClassifier Accuracy values here -->
+
+For the final model I experimented with the [LightGBM](https://lightgbm.readthedocs.io/en/latest/) and [XGBOOST](https://xgboost.readthedocs.io/en/latest/) model, which gave following accuracy values:
+<!-- Put the LightGBM and XGBOOST Accuracy values here -->
 
 ### Refinement
 In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
