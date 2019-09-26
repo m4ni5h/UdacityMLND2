@@ -179,21 +179,16 @@ For the final model I experimented with the [LightGBM](https://lightgbm.readthed
 0.736 and 0.761 respectively
 
 ### Refinement
-In this section, you will need to discuss the process of improvement you made upon the algorithms and techniques you used in your implementation. For example, adjusting parameters for certain models to acquire improved solutions would fall under the refinement category. Your initial and final solutions should be reported, as well as any significant intermediate results as necessary. Questions to ask yourself when writing this section:
-- _Has an initial solution been found and clearly reported?_
-- _Is the process of improvement clearly documented, such as what techniques were used?_
-- _Are intermediate and final solutions clearly reported as the process is improved?_
-
-For refining the final solution which is [XGBOOST](https://xgboost.readthedocs.io/en/latest/) I had to understand the parameters defined in [XGBOOST Docs](https://xgboost.readthedocs.io/en/latest/python/python_api.html#xgboost.XGBClassifier). The main parameters which required tuning in this case was learning_rate, n_estimators, max_depth and n_jobs. Also, as XGBOOST supports early stopping I used it in case our model reaches inflection point. 
+For refining the final solution which is [XGBOOST](https://xgboost.readthedocs.io/en/latest/) I had to understand the parameters defined in [XGBOOST Docs](https://xgboost.readthedocs.io/en/latest/python/python_api.html#xgboost.XGBClassifier). The main parameters which required tuning in this case was learning_rate, n_estimators, max_depth and n_jobs. The process that was employed for tuning is [GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html), and the chosen scoring parameter is 'accuracy'. Also, as XGBOOST supports early stopping I used it in case our model reaches inflection point. 
 Following graphs were obtained when trying to find out the tuned values for the above mentioned hyper parameters.
 <p align="center">
-  <img src="learning_rate_VS_log_loss.png">
+  <img src="learning_rate_VS_accuracy.png">
 </p>
 <p align="center">
-  <img src="estimator_number_VS_log_loss.png">
+  <img src="estimator_number_VS_accuracy.png">
 </p>
 <p align="center">
-  <img src="depth_VS_log_loss.png">
+  <img src="depth_VS_accuracy.png">
 </p>
 <p align="center">
   <img src="num_jobs_VS_speed.png">
