@@ -178,6 +178,7 @@ In this section, you will need to discuss the process of improvement you made up
 - _Is the process of improvement clearly documented, such as what techniques were used?_
 - _Are intermediate and final solutions clearly reported as the process is improved?_
 
+For refining the final solution which is [XGBOOST](https://xgboost.readthedocs.io/en/latest/) I had to understand deeply the parameters defined in [XGBOOST Docs](https://xgboost.readthedocs.io/en/latest/python/python_api.html#xgboost.XGBClassifier). 
 
 ## IV. Results
 _(approx. 2-3 pages)_
