@@ -36,7 +36,6 @@ references:
 ## II. Analysis
 
 ### Data Exploration
-(categorical variables, missing values, outliers, etc.)_
 The Dataset has been taken from the [WSDM - KKBox's Music Recommendation Challenge](https://www.kaggle.com/c/kkbox-music-recommendation-challenge/overview).
 From [KKBOX](https://www.kkbox.com/) we have training data set consisting of information of the first observable listening event for each unique user-song pair within a specific time duration. Metadata of each unique user and song pair is also provided.  
 The train and the test data are selected from users listening history in a given time period. The train and test sets are split based on time, and the split of public/private are based on unique user/song pairs. 
@@ -86,11 +85,12 @@ Languages in the Training and Testing Dataset: 10
 Genres in Training Dataset: 572  
 Genres in Training Dataset: 501   
 
-The categorical features present in the Dataset: msno, song_id, source_system_tab, source_screen_name, source_type, genre_ids, artist_name, composer, lyricist, gender, name, isrc
+The categorical features present in the Dataset: msno, song_id, source_system_tab, source_screen_name, source_type, genre_ids, artist_name, composer, lyricist, gender, name, isrc.  
 Also, some features had Null values which had to be handled.
 
 ### Exploratory Visualization
-The dataset shared by [KKBOX](https://www.kkbox.com/) has five files  members.csv, song_extra_info.csv, songs.csv, test.csv and train.csv. It can be seen in the notebook that the final training set is created by merging data from members.csv, song_extra_info.csv, songs.csv and train.csv. This merge operation resulted to 20 features, further breaking down the two time features (registration_init_time and expiration_date) into year, month and date, resulted to a total of 24 features after removing the two previous time features because of duplicity. To see relationship between 24 features was a big task, so I employed ensemble.RandomForestClassifier to do the Feature Importance analysis and created a PairPlot of Important Features.
+The dataset shared by [KKBOX](https://www.kkbox.com/) has five files  members.csv, song_extra_info.csv, songs.csv, test.csv and train.csv. It can be seen in the notebook that the final training set is created by merging data from members.csv, song_extra_info.csv, songs.csv and train.csv. This merge operation resulted to 20 features, further breaking down the two time features (registration_init_time and expiration_date) into year, month and date, resulted to a total of 24 features after removing the two previous time features because of duplicity. To see relationship between 24 features was a big task, so I employed [Feature Importance](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier.feature_importances_) present in [Ensemble RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier) to deduce Important Features and then created a PairPlot of Important Features to understand the relationship between the features.  
+
 <p align="center">
   <img src="important_features.png">
 </p>
@@ -193,6 +193,15 @@ Following graphs were obtained when trying to find out the tuned values for the 
 <p align="center">
   <img src="num_jobs_VS_speed.png">
 </p>
+
+---
+references:
+- https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.LabelEncoder.html
+- https://lightgbm.readthedocs.io/en/latest/
+- https://xgboost.readthedocs.io/en/latest/
+- http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier/
+- https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html
+---
 
 ## IV. Results
 _(approx. 2-3 pages)_
