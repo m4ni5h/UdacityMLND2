@@ -201,6 +201,7 @@ references:
 - https://xgboost.readthedocs.io/en/latest/
 - http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier/
 - https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html
+- https://machinelearningmastery.com/xgboost-python-mini-course/
 ---
 
 ## IV. Results
@@ -212,6 +213,7 @@ In this section, the final model and any supporting qualities should be evaluate
 - _Has the final model been tested with various inputs to evaluate whether the model generalizes well to unseen data?_
 - _Is the model robust enough for the problem? Do small perturbations (changes) in training data or the input space greatly affect the results?_
 - _Can results found from the model be trusted?_
+Original train.csv size 971.7MB split to 200MB and test.csv size 347.8MB also split to 145MB.
 
 ### Justification
 In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
