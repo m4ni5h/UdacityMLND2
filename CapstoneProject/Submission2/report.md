@@ -1,7 +1,7 @@
 # Machine Learning Engineer Nanodegree
 ## Capstone Project
-Joe Udacity  
-December 31st, 2050
+Manish Kumar  
+September 28, 2019
 
 ## I. Definition
 
@@ -272,6 +272,8 @@ Reflecting on the process that I followed for completing the project can be put 
 
 The Initial plan I had of solving this classification problem was with a Deep Neural Network architecture, I tried different Architectures with Parameter tuning but I was not able to get accuracy value more than 75%. Then it was realized that in Machine Learning world there are a lot of Algorithms which still are a valuable selection for solving ML Problems. Not every problem requires a Deep Neural Network solution. Arriving at a new Neural Network architecture for a real world problem is task which requires a lot of Research and time.
 
+<div style="page-break-after: always;"></div>
+
 ### Improvement
 In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution. Questions to ask yourself when writing this section:
 - _Are there further improvements that could be made on the algorithms or techniques you used in this project?_
@@ -287,13 +289,3 @@ I see that there are some scope of improvements in my submission that I realized
 references:
 - https://stats.stackexchange.com/questions/395697/what-is-an-intuitive-interpretation-of-the-leaf-values-in-xgboost-base-learners
 ---
-
-**Before submitting, ask yourself. . .**
-
-- Does the project report you’ve written follow a well-organized structure similar to that of the project template?
-- Is each section (particularly **Analysis** and **Methodology**) written in a clear, concise and specific fashion? Are there any ambiguous terms or phrases that need clarification?
-- Would the intended audience of your project be able to understand your analysis, methods, and results?
-- Have you properly proof-read your project report to assure there are minimal grammatical and spelling mistakes?
-- Are all the resources used for this project correctly cited and referenced?
-- Is the code that implements your solution easily readable and properly commented?
-- Does the code execute without error and produce results similar to those reported?
