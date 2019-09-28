@@ -118,7 +118,7 @@ For the final solution I intend to use the better performing model among [LightG
 
 ### Benchmark
 As mentioned above, I choose to use [StackingCVClassifier](http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier/) to stack basic models which perform better on the dataset.
-From the analysis done, which can be accessed in the accompanying Jupyter notebook, its seen that [GradientBoostingClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html) and [RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) perform better than the other listed models. The two models gave an accuracy of 0.72 and 0.74 respectively when trained on the data.
+From the analysis done, which can be accessed in the accompanying Jupyter notebook, its seen that [GradientBoostingClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html) and [RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) perform better than the other listed models. The two models gave an [accuracy](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html) of 0.72 and 0.74 respectively when trained on the data.
 
 --- 
 references:
@@ -179,8 +179,9 @@ For the final model I experimented with the [LightGBM](https://lightgbm.readthed
 0.736 and 0.761 respectively
 
 ### Refinement
-For refining the final solution which is [XGBOOST](https://xgboost.readthedocs.io/en/latest/) I had to understand the parameters defined in [XGBOOST Docs](https://xgboost.readthedocs.io/en/latest/python/python_api.html#xgboost.XGBClassifier). The main parameters which required tuning in this case was learning_rate, n_estimators, max_depth and n_jobs. The process that was employed for tuning is [GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html), and the chosen scoring parameter is 'accuracy'. Also, as XGBOOST supports early stopping I used it in case our model reaches inflection point. 
-Following graphs were obtained when trying to find out the tuned values for the above mentioned hyper parameters.
+For refining the final solution which is [XGBOOST](https://xgboost.readthedocs.io/en/latest/) I had to understand the parameters defined in [XGBOOST_Docs](https://xgboost.readthedocs.io/en/latest/python/python_api.html#xgboost.XGBClassifier). The main parameters which I chose for tuning in this case was learning_rate, n_estimators, max_depth and n_jobs. The process that was employed for tuning is [GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html), and the chosen scoring parameter is '[accuracy]'(https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html). Also, as XGBOOST supports early stopping I used it in case our model reaches inflection point. 
+Following graphs were obtained when trying to find out the tuned values for the above mentioned hyper parameters(implementation in the accompanying Jupyter Notebook).
+
 <p align="center">
   <img src="learning_rate_VS_accuracy.png">
 </p>
@@ -201,35 +202,60 @@ references:
 - https://xgboost.readthedocs.io/en/latest/
 - http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier/
 - https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html
-- https://machinelearningmastery.com/xgboost-python-mini-course/
+- https://machinelearningmastery.com/xgboost-with-python/
 ---
 
 ## IV. Results
-_(approx. 2-3 pages)_
 
 ### Model Evaluation and Validation
-In this section, the final model and any supporting qualities should be evaluated in detail. It should be clear how the final model was derived and why this model was chosen. In addition, some type of analysis should be used to validate the robustness of this model and its solution, such as manipulating the input data or environment to see how the model’s solution is affected (this is called sensitivity analysis). Questions to ask yourself when writing this section:
-- _Is the final model reasonable and aligning with solution expectations? Are the final parameters of the model appropriate?_
-- _Has the final model been tested with various inputs to evaluate whether the model generalizes well to unseen data?_
-- _Is the model robust enough for the problem? Do small perturbations (changes) in training data or the input space greatly affect the results?_
-- _Can results found from the model be trusted?_
-Original train.csv size 971.7MB split to 200MB and test.csv size 347.8MB also split to 145MB.
+The final XGBClassifier model is chosen with following hyperparameters (implementation in the accompanying Jupyter notebook):
+- learning_rate(chosen value = 0.3)
+  - A problem with gradient boosted decision trees is that they are quick to learn and overfit training data. One effective way to slow down learning in the gradient boosting model is to use a learning rate, from the study on the relationship between accuracy and the learning rate [here](#Refinement) where accuracy value was calculated for learning rates 0.0001, 0.001, 0.01, 0.1, 0.2 and 0.3, the accuracy value seems to not vary much after 0.3, which led to choosing this value.
+- n_estimators(chosen value = 300)
+  - Gradient boosting involves the creation and addition of decision trees sequentialy, each attempting to correct the mistakes of the learners that came before it. This raises the question as to how many trees (estimators) to configure in your gradient boosting model. From the study on the relationship between accuracy and number of Estimators used by the model [here](#Refinement), I tried finding accuracy value for number of estimators 50, 100, 150, 200, 250, 300 and 350
+- max_depth(chosen value = 20)
+  - This parameter lets us choose the size of the decision trees, Shallow trees are expected to have poor performance as they capture few details and if we choose too deeper trees they capture too many details and overfit the training dataset. From the study on the relationship between accuracy and the max depth parameter used by the model [here](#Refinement), I tried finding accuracy value for maximum depth values 12, 14, 16, 18 and 20.
+- n_jobs(chosen value = 8)
+  - The XGBoost library for gradient boosting is designed for efficient multi-core parallel processing. This allows it to efficiently use all of the CPU cores in our system when training. From the analysis on the relationship between training speed and number of threads used by the model for training [here](#Refinement), we can see a decrease in training time as number of threads increase.
+
+The values were obtained keeping the accuracy of the model as the scoring parameter in [sklearn.model_selection.GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html).
+
+For the sensitivity analysis of the model and its Original training data obtained from the [WSDM - KKBox's Music Recommendation Challenge](https://www.kaggle.com/c/kkbox-music-recommendation-challenge/overview) had train.csv of size 971.7MB, this was split into 5 csv files of 200MB. Keeping all other input files and validation dataset same, I was able to get the an accuracy of 0.7572, 0.7622, 0.7101, 0.7781 and 0.7434 from the final refined XGBOOST model.
 
 ### Justification
-In this section, your model’s final solution and its results should be compared to the benchmark you established earlier in the project using some type of statistical analysis. You should also justify whether these results and the solution are significant enough to have solved the problem posed in the project. Questions to ask yourself when writing this section:
-- _Are the final results found stronger than the benchmark result reported earlier?_
-- _Have you thoroughly analyzed and discussed the final solution?_
-- _Is the final solution significant enough to have solved the problem?_
+The benchmark model for this project is the ensembled/stacked model of two better performing models from the classic ML model list:
+- KNeighborsClassifier: 0.618
+- DecisionTreeClassifier: 0.697
+- RandomForestClassifier: 0.746
+- AdaBoostClassifier: 0.714
+- GradientBoostingClassifier: 0.721
+- GaussianNB: 0.665
+- LinearDiscriminantAnalysis: 0.673
+- QuadraticDiscriminantAnalysis: 0.680  
+The ensemble of the two Models([GradientBoostingClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html) and [RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html)) using [StackingCVClassifier](http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier/) resulted in an overall accuracy of 0.73
 
+With the Final Model based on XGBOOST, a Gradient boosting algorithm, the 0.73 benchmark was easily achieved(0.747) without any tuning by using the default parameters. Moreover, after tuning the parameters for the problem at hand the final model was able to give a consistant accuracy value more than 0.75, even when trying on different training samples. So this proves that the final solution is significant enough to solve the problem.  
+
+---
+references:
+- https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html
+- https://www.kaggle.com/c/kkbox-music-recommendation-challenge/overview
+- https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html 
+- https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html 
+- http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier
+---
 
 ## V. Conclusion
-_(approx. 1-2 pages)_
 
 ### Free-Form Visualization
-In this section, you will need to provide some form of visualization that emphasizes an important quality about the project. It is much more free-form, but should reasonably support a significant result or characteristic about the problem that you want to discuss. Questions to ask yourself when writing this section:
-- _Have you visualized a relevant or important quality about the problem, dataset, input data, or results?_
-- _Is the visualization thoroughly analyzed and discussed?_
-- _If a plot is provided, are the axes, title, and datum clearly defined?_
+XGBoost is an implementation of gradient boosted decision trees and plotting individual decision trees can provide insight into the gradient boosting process for a given dataset. Following is the tree generated on the Final Model, with max_depth i.e. size of the Decision Tree equal to 3.
+
+<p align="center">
+  <img src="xgb_tree.png">
+</p>
+
+When the XGB model is used for prediction, the result from each individual tree are combined together, they are not probabilities but the estimates of the score before performing the logistic transformation when performing logistic regression.
+reference: https://stats.stackexchange.com/questions/395697/what-is-an-intuitive-interpretation-of-the-leaf-values-in-xgboost-base-learners
 
 ### Reflection
 In this section, you will summarize the entire end-to-end problem solution and discuss one or two particular aspects of the project you found interesting or difficult. You are expected to reflect on the project as a whole to show that you have a firm understanding of the entire process employed in your work. Questions to ask yourself when writing this section:
