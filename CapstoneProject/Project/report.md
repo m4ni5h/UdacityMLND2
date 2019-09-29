@@ -19,10 +19,13 @@ In this project, I will try to predict the chances of a user listening to a song
 If there are recurring listening event(s) triggered within a month after the user’s very first observable listening event, its target is marked 1, and 0 otherwise in the training set. The same rule applies to the testing set.  
 
 ### Metrics
-I would be using [Accuracy_Score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html) which is part of SciKit Library to measure the performance of the model. As mentioned in the [SCIKIT knowledge base](https://scikit-learn.org/stable/modules/model_evaluation.html#accuracy-score), accuracy score can be used in multi-label or single-label classification. Our case is single label classification problem i.e. target value, which indicates the probability of replaying the song.
+I would be using [Accuracy_Score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html) which is the most common evaluation metric for classification problems and is part of SciKit Library to measure the performance of the model. As mentioned in the [SCIKIT knowledge base](https://scikit-learn.org/stable/modules/model_evaluation.html#accuracy-score), accuracy score can be used in multi-label or single-label classification. Our case is single label classification problem i.e. target value, which indicates the probability of replaying the song.
+
 <p align="center">
   <img src="accuracy_scikit.png">
 </p>
+
+[Accuracy_Score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html) returns the percentage of labels the model predicted correctly, this is a very intuitive and accurate method to calculate the efficiency of the model where we are trying to find if any feature set will result in replaying of the song within a month. Choosing [Accuracy_Score](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html) for this problem seemed appropriate as the predictions and prediction errors are equally important, when a subscriber is provided a suggestion for a song he/she might replay.
 
 --- 
 references:
@@ -86,13 +89,21 @@ Genres in Training Dataset: 572
 Genres in Training Dataset: 501   
 
 The categorical features present in the Dataset: msno, song_id, source_system_tab, source_screen_name, source_type, genre_ids, artist_name, composer, lyricist, gender, name, isrc.  
-Also, some features had Null values which had to be handled.
+Also, some features had Null values which had to be handled.  
+A sample of the Training Dataset created after merging the csv files:
+<p align="center">
+  <img src="dataframe_head.png">
+</p>
+The Numeric description of Dataset used is:
+<p align="center">
+  <img src="dataframe_describe.png">
+</p>
 
 ### Exploratory Visualization
 The dataset shared by [KKBOX](https://www.kkbox.com/) has five files  members.csv, song_extra_info.csv, songs.csv, test.csv and train.csv. It can be seen in the notebook that the final training set is created by merging data from members.csv, song_extra_info.csv, songs.csv and train.csv. This merge operation resulted to 20 features, further breaking down the two time features (registration_init_time and expiration_date) into year, month and date, resulted to a total of 24 features after removing the two previous time features because of duplicity. To see relationship between 24 features was a big task, so I employed [Feature_Importance](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier.feature_importances_) present in [Ensemble_RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier) to deduce Important Features and then created a PairPlot of Important Features to understand the relationship between the features.  
 
 <p align="center">
-  <img src="important_features.png">
+  <img src="important_features.png" width="350" height="190">
 </p>
 <p align="center">
   <img src="pair_plot.png">
@@ -114,12 +125,26 @@ For solving the chosen classification problem where we want to find if a music s
 - [LinearDiscriminantAnalysis](https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.LinearDiscriminantAnalysis.html) and
 - [QuadraticDiscriminantAnalysis](https://scikit-learn.org/stable/modules/generated/sklearn.discriminant_analysis.QuadraticDiscriminantAnalysis.html) 
 
-Then finally using [StackingCVClassifier](http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier) technique to stack few selected classifiers to get better results. The resulting ensemble model will serve as my Benchmark model.
-For the final solution I intend to use the better performing model among [LightGBM](https://lightgbm.readthedocs.io/en/latest/) and [XGBOOST](https://xgboost.readthedocs.io/en/latest/).
+Then finally using [StackingCVClassifier](http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier) technique to stack few selected classifiers to get better results. For the final solution I intend to use the better performing model among the [StackingCVClassifier](http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier), [LightGBM](https://lightgbm.readthedocs.io/en/latest/) and [XGBOOST](https://xgboost.readthedocs.io/en/latest/)
+
+The [XGBOOST](https://xgboost.readthedocs.io/en/latest/) library is a kind of gradient boosting decision tree algorithm. The algorithm has lots of different names such as gradient boosting, multiple additive regression trees, stochastic gradient boosting or gradient boosting machines. Boosting is an ensemble technique where new models are added to correct the errors made by existing models. Models are added sequentially until no further improvements is possible. A popular example is the AdaBoost algorithm that weights data points that are hard to predict. Gradient boosting is an approach where new models are created that predict the residuals or errors of prior models and then are added together to make the final prediction. It is called gradient boosting because it uses a gradient descent algorithm to minimize the loss when adding new models. This approach supports both regression and classification predictive modeling problems. 
+The aim to minimize the following regularized objective:
+<p align="center">
+  <img src="objective.png" width="250" height="75">
+</p>
+Here l is a differentiable convex loss function that measures the difference between the prediction ˆyi and the target yi. The second term Ω penalizes the complexity of the model (i.e., the regression tree functions). The additional regularization term helps to smooth the final learnt weights to avoid over-fitting. Intuitively, the regularized objective will tend to select a model employing simple and predictive functions.
+
+[LightGBM](https://lightgbm.readthedocs.io/en/latest/) is a gradient boosting framework that uses tree based learning algorithms. It is designed to be distributed and efficient with Fast training speed and higher efficiency it has Lower memory usage, good accuracy with support of parallel and GPU learning it can used to handle large-scale data. LightGBM uses histogram-based algorithms which buckets continuous feature values into discrete bins. This speeds up training and reduces memory usage. LightGBM grows trees leaf-wise (best-first), it  chooses the leaf with max delta loss to grow. Keeping number of leaf fixed, leaf-wise algorithms tend to achieve lower loss than level-wise algorithms. Leaf-wise may cause over-fitting when size of data is small, so LightGBM includes the max_depth parameter to limit tree depth. However, trees still grow leaf-wise even when max_depth is specified.
+<p align="center">
+  <img src="level-wise_LGBM.png" width="512" height="178">
+</p>
+<p align="center">
+  <img src="leaf-wise_LGBM.png" width="512" height="178">
+</p>
+<div style="page-break-after: always;"></div>
 
 ### Benchmark
-As mentioned above, I choose to use [StackingCVClassifier](http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier/) to stack basic models which perform better on the dataset.
-From the analysis done, which can be accessed in the accompanying Jupyter notebook, its seen that [GradientBoostingClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html) and [RandomForestClassifier](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html) perform better than the other listed models. The two models gave an [accuracy](https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html) of 0.72 and 0.74 respectively when trained on the data.
+For benchmarking I choose to use a Linear Model, [LinearRegression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html) with that I am able to get an [accuracy_score]((https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html)) of  0.6695.
 
 --- 
 references:
@@ -134,6 +159,10 @@ references:
 - http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier
 - https://lightgbm.readthedocs.io/en/latest
 - https://xgboost.readthedocs.io/en/latest/
+- https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LinearRegression.html
+- https://arxiv.org/pdf/1603.02754.pdf
+- https://github.com/microsoft/LightGBM
+- https://github.com/microsoft/LightGBM/blob/master/docs/Features.rst
 ---
 
 ## III. Methodology
@@ -177,7 +206,8 @@ The implementation can be seen in the accompanying Jupyter notebook where the ac
 Its seen that RandomForestClassifier and GradientBoostingClassifier perform better than the rest of the Models in the list. Thus I created an ensemble of the two Models using [StackingCVClassifier](http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier/) which resulted in an overall accuracy of 0.73
 
 For the final model I experimented with the [LightGBM](https://lightgbm.readthedocs.io/en/latest/) and [XGBOOST](https://xgboost.readthedocs.io/en/latest/) model, which gave following accuracy values:
-0.736 and 0.761 respectively
+0.736 and 0.761 respectively.  
+While using the [LightGBM](https://lightgbm.readthedocs.io/en/latest/) model, there was some problem with the categorical features. After some looking out I found out that its the [limitation](https://github.com/Microsoft/LightGBM/issues/1020) of [LightGBM](https://lightgbm.readthedocs.io/en/latest/) that it does not support categorical features. So one more step was required to use [LabelEncoder](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.LabelEncoder.html), in general Tree based algorithms work with categorical features, but [LightGBM](https://lightgbm.readthedocs.io/en/latest/) does not.
 
 ### Refinement
 For refining the final solution which is [XGBOOST](https://xgboost.readthedocs.io/en/latest/) I had to understand the parameters defined in [XGBOOST_Docs](https://xgboost.readthedocs.io/en/latest/python/python_api.html#xgboost.XGBClassifier). The main parameters which I chose for tuning in this case was learning_rate, n_estimators, max_depth and n_jobs. The process that was employed for tuning is [GridSearchCV](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html), and the chosen scoring parameter is '[accuracy]'(https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html). Also, as XGBOOST supports early stopping I used it in case our model reaches inflection point. 
@@ -204,6 +234,7 @@ references:
 - http://rasbt.github.io/mlxtend/user_guide/classifier/StackingCVClassifier/
 - https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html
 - https://machinelearningmastery.com/xgboost-with-python/
+- https://github.com/Microsoft/LightGBM/issues/1020
 ---
 
 ## IV. Results
@@ -275,10 +306,6 @@ The Initial plan I had of solving this classification problem was with a Deep Ne
 <div style="page-break-after: always;"></div>
 
 ### Improvement
-In this section, you will need to provide discussion as to how one aspect of the implementation you designed could be improved. As an example, consider ways your implementation can be made more general, and what would need to be modified. You do not need to make this improvement, but the potential solutions resulting from these changes are considered and compared/contrasted to your current solution. Questions to ask yourself when writing this section:
-- _Are there further improvements that could be made on the algorithms or techniques you used in this project?_
-- _Were there algorithms or techniques you researched that you did not know how to implement, but would consider using if you knew how?_
-- _If you used your final solution as the new benchmark, do you think an even better solution exists?_
 I see that there are some scope of improvements in my submission that I realized while solving the problem:
 - Feature engineering
   - My attempt to solve this problem with a Neural Network could have been possible if I had more knowledge and spent time on Feature engineering. Its very important to understand what part of the feature will have more impact on the final decision making done by the model. I think that understanding of how to derive a meaningfull feature out of given features is a real challenge and effort made here reflects in the overall Final result, I overlooked this in my attempt.
